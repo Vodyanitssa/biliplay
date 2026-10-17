@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="30" fill="#FB7299"/>
+  <!-- 模仿 B 站小电视的两根天线 -->
+  <path d="M40 26 L52 38 M88 26 L76 38" stroke="#fff" stroke-width="8" stroke-linecap="round" fill="none"/>
+  <!-- 电视屏幕 -->
+  <rect x="22" y="38" width="84" height="62" rx="14" fill="#fff"/>
+  <!-- 播放三角 -->
+  <path d="M56 53 L56 85 L82 69 Z" fill="#FB7299"/>
+</svg>

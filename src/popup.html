@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>BiliPlay</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header class="head">
+      <span class="logo">▶</span>
+      <span class="title">BiliPlay</span>
+      <label class="switch" title="启用/停用快捷键">
+        <input type="checkbox" id="enabled" />
+        <span>启用</span>
+      </label>
+    </header>
+
+    <section class="block">
+      <div class="label">当前视频速度</div>
+      <div class="speeds" id="speeds">
+        <button type="button" data-speed="0.5">0.5x</button>
+        <button type="button" data-speed="1">1x</button>
+        <button type="button" data-speed="1.25">1.25x</button>
+        <button type="button" data-speed="1.5">1.5x</button>
+        <button type="button" data-speed="2">2x</button>
+        <button type="button" data-speed="2.5">2.5x</button>
+      </div>
+      <p class="tip" id="tip"></p>
+    </section>
+
+    <section class="block">
+      <div class="label">快捷键</div>
+      <ul class="keys" id="keys"></ul>
+    </section>
+
+    <footer class="foot">
+      <button id="openOptions" class="btn" type="button">打开设置</button>
+    </footer>
+
+    <script src="common.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

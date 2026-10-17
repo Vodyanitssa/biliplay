@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BiliPlay 设置</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <h1>BiliPlay 设置</h1>
+      <p class="sub">哔哩哔哩播放器快捷键 · 修改后立即生效，无需刷新视频页</p>
+
+      <section class="card">
+        <h2>总开关</h2>
+        <label class="row">
+          <input type="checkbox" id="enabled" />
+          <span>启用快捷键</span>
+        </label>
+        <label class="row">
+          <input type="checkbox" id="showToast" />
+          <span>操作时在页面上显示提示</span>
+        </label>
+        <label class="row">
+          <input type="checkbox" id="rememberSpeed" />
+          <span>记住倍速（切换视频 / 分 P 后自动应用）</span>
+        </label>
+      </section>
+
+      <section class="card">
+        <h2>快捷键</h2>
+        <p class="hint">点击右侧按键按钮，然后按下你想绑定的键；按 <kbd>Esc</kbd> 取消录制。</p>
+        <!-- 重复绑定会让靠后的那个动作静默失效，这里给个显眼的提示 -->
+        <div id="conflicts" class="notice" hidden></div>
+        <table id="keys" class="keys"></table>
+        <button id="resetKeys" class="btn btn-ghost" type="button">全部恢复默认</button>
+      </section>
+
+      <section class="card">
+        <h2>其他</h2>
+        <!--
+          以下被注释掉的三项（实现方式 / 投币枚数 / 快进秒数）只对
+          「点赞 / 投币 / 收藏 / 快进快退」这些默认未绑定的功能有意义而已。
+          把对应功能从 common.js 里恢复后，再取消这里的注释。
+        -->
+        <!-- <label class="row">
+          <span>点赞/投币/收藏的实现方式</span>
+          <select id="mode">
+            <option value="api">调用 B 站接口（稳定，推荐）</option>
+            <option value="dom">模拟点击页面按钮（UI 即时刷新）</option>
+          </select>
+        </label> -->
+        <!-- <label class="row">
+          <span>每次投币枚数</span>
+          <select id="coinCount">
+            <option value="1">1 枚</option>
+            <option value="2">2 枚</option>
+          </select>
+        </label> -->
+        <label class="row">
+          <span>倍速步进</span>
+          <select id="speedStep">
+            <option value="0.1">0.1</option>
+            <option value="0.25">0.25</option>
+            <option value="0.5">0.5</option>
+          </select>
+        </label>
+        <label class="row">
+          <span>最高倍速</span>
+          <select id="maxSpeed">
+            <option value="2">2x</option>
+            <option value="3">3x</option>
+            <option value="4">4x</option>
+            <option value="16">16x</option>
+          </select>
+        </label>
+        <label class="row">
+          <span>逐帧步长（按片源帧率算）</span>
+          <select id="frameRate">
+            <option value="24">24 fps（番剧 / 电影）</option>
+            <option value="25">25 fps</option>
+            <option value="30">30 fps（默认）</option>
+            <option value="60">60 fps</option>
+          </select>
+        </label>
+        <!-- <label class="row">
+          <span>快进 / 快退秒数</span>
+          <select id="seekStep">
+            <option value="3">3 秒</option>
+            <option value="5">5 秒</option>
+            <option value="10">10 秒</option>
+            <option value="15">15 秒</option>
+          </select>
+        </label> -->
+      </section>
+
+      <p class="foot">
+        B 站官方播放器自带 <kbd>Q</kbd> 点赞（长按三连）/ <kbd>W</kbd> 投币 / <kbd>E</kbd> 收藏
+        / <kbd>空格</kbd> 播放暂停 / <kbd>←</kbd> <kbd>→</kbd> 快进快退 / <kbd>D</kbd> 弹幕 /
+        <kbd>F</kbd> 全屏 / <kbd>M</kbd> 静音，以及 <kbd>[</kbd> <kbd>]</kbd> 上一集 / 下一集；
+        这些功能本扩展默认<strong>不重复绑定</strong>（实现代码保留，启用方法见 README 第 6 节）。
+      </p>
+    </main>
+
+    <script src="common.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>

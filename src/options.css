@@ -1,0 +1,245 @@
+:root {
+  --pink: #fb7299;
+  --pink-dark: #e15a80;
+  --text: #18191c;
+  --muted: #6d757a;
+  --line: #e5e9ef;
+  --bg: #f6f7f8;
+  --card: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.wrap {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 32px 20px 64px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 22px;
+}
+
+h2 {
+  margin: 0 0 12px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.sub {
+  margin: 0 0 24px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 16px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+}
+
+.row > span:first-child {
+  flex: 1;
+}
+
+.row input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--pink);
+}
+
+select {
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.hint {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 12.5px;
+}
+
+/* 重复绑定的提示条 */
+.notice {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border: 1px solid #f0c36d;
+  border-left-width: 3px;
+  border-radius: 8px;
+  background: #fff8e6;
+  color: #8a5a00;
+  font-size: 12.5px;
+}
+
+.notice ul {
+  margin: 6px 0 4px;
+  padding-left: 18px;
+}
+
+.notice li {
+  margin: 2px 0;
+}
+
+.notice-foot {
+  display: block;
+  color: #a98a4a;
+  font-size: 12px;
+}
+
+.badge-warn {
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: #fff1d6;
+  color: #8a5a00;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.keys tr.is-conflict .key {
+  border-color: #f0c36d;
+  background: #fff8e6;
+  color: #8a5a00;
+}
+
+.keys {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.keys tr {
+  border-bottom: 1px solid var(--line);
+}
+
+.keys tr:last-child {
+  border-bottom: none;
+}
+
+.keys td {
+  padding: 8px 0;
+  vertical-align: middle;
+}
+
+.keys .name {
+  width: 55%;
+}
+
+.keys .group {
+  padding-top: 14px !important;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.keys tr:first-child .group {
+  padding-top: 0 !important;
+}
+
+.key-cell {
+  text-align: right;
+  padding-right: 12px !important;
+}
+
+.reset-cell {
+  width: 60px;
+  text-align: right;
+}
+
+.key {
+  min-width: 92px;
+  padding: 6px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  font: inherit;
+  font-size: 13px;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.key:hover {
+  border-color: var(--pink);
+  color: var(--pink-dark);
+}
+
+.key.recording {
+  background: var(--pink);
+  border-color: var(--pink);
+  color: #fff;
+}
+
+.btn {
+  padding: 8px 18px;
+  border-radius: 8px;
+  border: none;
+  background: var(--pink);
+  color: #fff;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: var(--pink-dark);
+}
+
+.btn-ghost {
+  background: #fff;
+  border: 1px solid var(--line);
+  color: var(--text);
+}
+
+.btn-ghost:hover {
+  background: #fff;
+  border-color: var(--pink);
+  color: var(--pink-dark);
+}
+
+.btn.small {
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+kbd {
+  display: inline-block;
+  padding: 1px 6px;
+  border: 1px solid var(--line);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  background: #fff;
+  font-family: inherit;
+  font-size: 12px;
+}
+
+.foot {
+  margin: 24px 0 0;
+  color: var(--muted);
+  font-size: 12.5px;
+}

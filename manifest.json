@@ -1,0 +1,67 @@
+{
+  "manifest_version": 3,
+  "name": "BiliPlay — 哔哩哔哩播放器快捷键",
+  "version": "0.1.0",
+  "description": "给哔哩哔哩网页播放器补上官方没有的快捷键：字幕开关、倍速增减、上下帧、关灯、网页全屏、截图、画中画，按键均可自定义。",
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "guanyuchen.cs@gmail.com",
+      "author": "cgy",
+      "strict_min_version": "128.0"
+    }
+  },
+
+  "permissions": ["storage"],
+  "host_permissions": ["*://*.bilibili.com/*"],
+
+  "icons": {
+    "48": "icons/icon.svg",
+    "96": "icons/icon.svg"
+  },
+
+  "content_scripts": [
+    {
+      "matches": [
+        "*://www.bilibili.com/video/*",
+        "*://www.bilibili.com/list/*",
+        "*://www.bilibili.com/bangumi/play/*",
+        "*://www.bilibili.com/cheese/play/*",
+        "*://www.bilibili.com/medialist/play/*",
+        "*://www.bilibili.com/watchlater/*"
+      ],
+      "js": ["src/common.js", "src/toast.js", "src/bridge-client.js", "src/content.js"],
+      "css": ["src/toast.css"],
+      "run_at": "document_start",
+      "all_frames": false,
+      "world": "ISOLATED"
+    },
+    {
+      "matches": [
+        "*://www.bilibili.com/video/*",
+        "*://www.bilibili.com/list/*",
+        "*://www.bilibili.com/bangumi/play/*",
+        "*://www.bilibili.com/cheese/play/*",
+        "*://www.bilibili.com/medialist/play/*",
+        "*://www.bilibili.com/watchlater/*"
+      ],
+      "js": ["src/page-bridge.js"],
+      "run_at": "document_start",
+      "all_frames": false,
+      "world": "MAIN"
+    }
+  ],
+
+  "action": {
+    "default_title": "BiliPlay",
+    "default_popup": "src/popup.html",
+    "default_icon": {
+      "48": "icons/icon.svg"
+    }
+  },
+
+  "options_ui": {
+    "page": "src/options.html",
+    "open_in_tab": true
+  }
+}
