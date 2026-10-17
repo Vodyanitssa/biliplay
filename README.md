@@ -7,8 +7,9 @@
 （<kbd>Q</kbd> <kbd>W</kbd> <kbd>E</kbd> <kbd>空格</kbd> <kbd>←</kbd> <kbd>→</kbd> <kbd>D</kbd> …），
 所以本扩展默认**不再重复绑定**——不过它们的实现代码都保留着，想要随时取消一行注释就能启用。
 
-纯 Firefox 的 WebExtension（MV3），不依赖 Chrome 专有 API。**需要 Firefox 128 或更高版本**
-（用到了 `content_scripts` 的 `world: "MAIN"` 来读取页面状态）。
+纯 Firefox 的 WebExtension（MV3），不依赖 Chrome 专有 API。**需要 Firefox 140 或更高版本**
+（`world: "MAIN"` 要 128+，而 manifest 里按 AMO 新规声明的
+`data_collection_permissions` 要 140+，取高者）。
 
 ---
 
@@ -91,10 +92,16 @@ web-ext build -o            # 打包成 .zip（可再转 .xpi）
 ```
 biliplay/
 ├── manifest.json           # MV3 清单；两个内容脚本（隔离世界 + 主世界）
-├── icons/icon.svg          # 图标（Firefox 支持 SVG 图标）
+├── LICENSE                 # MPL-2.0
+├── PRIVACY.md              # 隐私政策（AMO 上架要求，需与代码行为一致）
+├── RELEASING.md            # 发布 / 发版流程清单
+├── icons/                  # icon.svg 是矢量源，icon-{48,96,128}.png 是打包用的位图
+├── store/icon-512.png      # AMO 列表页图标（不进包）
+├── tools/build.sh          # 打 dist/biliplay-<版本>.zip（只用 python3）
 ├── tests/                  # 冒烟测试（Marionette + 真实 Firefox）
 │   ├── run.sh              # 起临时 Firefox 跑一遍，跑完自动关
-│   └── validate.py         # 注入脚本 + 断言报告
+│   ├── validate.py         # 注入脚本 + 断言报告
+│   └── check-package.py    # 打包体检：结构校验 + Firefox 真实装载
 └── src/
     ├── page-bridge.js      # ★ 运行在页面主世界，读 __INITIAL_STATE__ 取视频 id
     ├── bridge-client.js    # ★ 隔离世界侧，接主世界传来的 id
@@ -254,6 +261,13 @@ tests/run.sh          # 起一个临时 headless Firefox，跑完自动关
 tests/run.sh --json   # 拿原始结果排查
 ```
 
+打包产物另有一份「体检」，会校验包结构**并让 Firefox 真正把它当扩展装载一遍**：
+
+```bash
+tools/build.sh                 # 先出包
+python3 tests/check-package.py # 13 项：结构 + 真实装载，当前全部通过
+```
+
 当前 **39 项断言全部通过**：
 
 - 七个脚本（含 `options.js` / `popup.js`）语法全部通过；
@@ -370,29 +384,55 @@ const DEFAULT_KEYS = {
 
 ---
 
-## 8. 打包 / 长期安装
+## 8. 打包 / 发布 / 长期安装
 
 ```bash
-web-ext lint                      # 先过一遍校验
-web-ext build -o --ignore-files "tests/**"   # 生成 dist/*.zip（不打进测试）
+tools/build.sh                  # → dist/biliplay-<版本>.zip（只用 python3，不依赖 node）
+python3 tests/check-package.py  # 包结构校验 + Firefox 真实装载
+tests/run.sh                    # 39 项功能断言
 ```
+
+`tools/build.sh` 只把运行时需要的文件打进包（`manifest.json` / `icons/` / `src/` /
+`LICENSE` / `README.md`），`tests/`、`store/`、`.git` 都不会进去。
+上传 AMO 时直接传这个 zip，**不要**直接把整个项目目录压成 zip。
+
+完整的发布流程（AMO 提交步骤、列表页要填什么、版本号规则、被审核员追问怎么答）
+见 [`RELEASING.md`](RELEASING.md)。
 
 要长期安装有两种方式：
 
 1. **Firefox 开发者版 / Nightly / ESR**：`about:config` 把 `xpinstall.signatures.required`
    设为 `false`，即可安装未签名的 `.xpi`（把 zip 改后缀）。
 2. **正式版**：必须提交到 [addons.mozilla.org](https://addons.mozilla.org/developers/)
-   签名后才能安装。用 `web-ext sign --api-key ... --api-secret ...` 可直接签名发布。
+   签名后才能安装。
 
-`browser_specific_settings.gecko.id` 已经填成本项目的固定 ID（用的是作者邮箱，
-AMO 要求的格式就是「像邮箱的字符串」；这个值一旦签名发布就**不能再改**了）。
+**上架后不可更改的两样东西**：
+
+- `browser_specific_settings.gecko.id` 已经填成本项目的固定 ID
+  （用的是作者邮箱，AMO 要求的格式就是「像邮箱的字符串」）；
+- `manifest.json` 里的 `name`。
+
+这两个值一旦签名发布就**不能再改**，改名相当于换了一个扩展。
+
+> 2025-11-03 起 AMO 要求新提交的扩展在 `browser_specific_settings.gecko` 里声明
+> `data_collection_permissions`，否则直接拒收。本扩展不收集任何数据，
+> 所以是 `{ "required": ["none"] }`，并因此把 `strict_min_version` 提到 `140.0`
+> （该字段需要 Firefox 140+）。详情和依据见 [`PRIVACY.md`](PRIVACY.md)。
+
+装了 web-ext 的话，下面两条也能用（本项目不依赖）：
+
+```bash
+web-ext lint
+web-ext build -o --ignore-files "tests/**" "store/**"
+```
 
 ---
 
 ## 9. 后续可以做的方向
 
 1. **进页面自动设置**：自动开字幕 / 自动应用倍速（`rememberSpeed` 已经能用，扩成开关即可）。
-2. **走签名流程上架**（第 8 节）。
+2. **上架后的维护**：跟进 B 站改版导致的选择器失效（见第 7 节），按
+   [`RELEASING.md`](RELEASING.md) 发新版。
 3. **把 `dom` 模式做得更稳**：为投币/收藏弹层的确认按钮补齐各版本选择器。
 4. **可移植到 Chrome**：`page-bridge.js` 的 `world: "MAIN"` 在 Chrome 111+ 同样支持，
    另外可在 `manifest.json` 加 `background.service_worker` 做成双浏览器通用（本扩展
